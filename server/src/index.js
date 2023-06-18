@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const contactsRoute = require('./routes/contactsRoute');
 require('dotenv').config()
 const app = express();
-const port = 3000;
+const port = 3005;
 const databaseURL = process.env.DATABASE_URL
 mongoose.connect(databaseURL, {
   useNewUrlParser: true,
@@ -15,10 +16,10 @@ mongoose.connect(databaseURL, {
   .catch((error) => {
     console.error('Failed to connect to MongoDB:', error);
   });
-  
+app.use(cors());
 app.use(express.json());
 
-app.use('/contacts', contactsRoute);
+app.use('/api/contacts', contactsRoute);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
